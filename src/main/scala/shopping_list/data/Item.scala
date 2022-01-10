@@ -9,7 +9,7 @@ import cats.implicits._
 /*
  * An Item represents an product/item to be bought.
  
- * @param id    The unique ID of the item.
+ * @param id    The  ID of the item.
  * @param name The name of the item
  * @param status The status of the item on the list
  * 
