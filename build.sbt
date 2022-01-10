@@ -4,12 +4,14 @@ version             := "0.0.1"
 scalaVersion := "2.13.3"
 
 
-val http4sVersion          = "0.18.4"
-val CatsVersion            = "1.6.0"
-val CirceVersion           = "0.9.3"
+val http4sVersion          = "0.22.0"
+val CatsVersion            = "2.6.1"
+val CirceVersion           = "0.14.1"
 val CirceConfigVersion     = "0.6.1"
 val DoobieVersion          = "0.5.3"
 val pureConfigVersion = "0.9.1"
+
+
 
 libraryDependencies += ++= Seq(
  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.2",
