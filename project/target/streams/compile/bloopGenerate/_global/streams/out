@@ -1,0 +1,4 @@
+[debug] [shopping_list-build] Classpath dependencies List()
+[debug] [shopping_list-build] Dependencies from configurations List()
+[debug] Bloop wrote the configuration of project 'shopping_list-build' to 'C:\Users\User\Programming\Scala\shopping_list\project\.bloop\shopping_list-build.json'
+[success] Generated .bloop\shopping_list-build.json
