@@ -1,4 +1,4 @@
-package shooping_list
+package shopping_list
 package data
 
 /*
@@ -7,7 +7,7 @@ package data
  */
 
  final case class Product(
-     id: Int,
+     id: Option[Int],
      name: String,
-     state: State
+     status: Status
  )
