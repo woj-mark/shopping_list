@@ -2,7 +2,7 @@ package shopping_list
 package data
 
 /**
- * The Status sealed trait represents the different statuses that a product can be in.
+ * The Status sealed trait represents the different statuses that an Item can be in.
  *
  */
 
