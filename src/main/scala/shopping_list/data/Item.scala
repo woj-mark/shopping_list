@@ -22,7 +22,7 @@ import cats.implicits._
     status: Status
  )
 
- object Product {
+ object Item {
 
 //Using circe to automatically derive JSON decoders and encoders for the Item case class
      implicit val encode: Encoder[Item] = deriveEncoder[Item]
