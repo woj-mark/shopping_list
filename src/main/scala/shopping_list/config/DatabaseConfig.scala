@@ -43,6 +43,11 @@ object DatabaseConfig {
                                             fixedThreadPool,
                                             cachedThreadPool)
 
+
+   /**
+    * Migrations applied to the database using the specified Flyway transactor
+    */
+
  def initializeDb[F[_]](config: DatabaseConfig)(implicit S: Sync[F]): F[Unit] =
     S.delay {
         val fw: Flyway = {

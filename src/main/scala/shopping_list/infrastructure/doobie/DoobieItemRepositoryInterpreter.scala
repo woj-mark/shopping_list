@@ -74,9 +74,10 @@ def create(item: Item): F[Item] =
   def delete(id: Long): F[Option[Item]] =
     OptionT(get(id)).semiflatMap(pet => ItemSQL.delete(id).run.transact(transactor).as(item)).value
 
-
-
-
-
-
+}
+//Companion object for the DoobieShoppingListInterpreter
+object DoobieShoppingListInterpreter {
+    //Defining apply method to create a new instance of the interpreter (constructor)
+  def apply[F[_]: Monad](transactor: Transactor[F]): DoobiePetRepositoryInterpreter[F] =
+    new DoobiePetRepositoryInterpreter[F](transactor)
 }
