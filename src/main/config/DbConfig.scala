@@ -1,9 +1,13 @@
-package config
+package shopping_list.config
 
 import eu.timepit.refined.auto._
 import eu.timepit.refined.pureconfig._
 import pureconfig._
 import pureconfig.generic.semiauto._
+
+
+final case class DatabaseConnectionsConfig(poolSize: Int)
+
 
 /**
   * The configuration for the database connection.
@@ -13,25 +17,40 @@ import pureconfig.generic.semiauto._
   * @param user   The username for the database connection.
   * @param pass   The password for the database connection.
   */
-
-final case class DbConfig(
+  
+final case class DatabaseConfig(
     driver: NonEmptyString,
     url: DatabaseUrl,
     user: DatabaseLogin,
-    pass: DatabasePassword
-)
+    pass: DatabasePassword,
+    connections: DatabaseConnectionsConfig)
+
 
 
 /**
- * A companion object with an implicit for the config to map
- * from a configuration to the data types. Function 'deriveReader'
- * derives the codes (similarly as for JSON). 
+ * A companion object for configuraton of the database. ADD MORE comment
  * 
- * N.T.S. There is always additional overhead for automatic derivation 
- * by the compiler.
  */
 object DatabaseConfig {
+  def transactor[F[_]: Async: ContextShift](
+      config: DatabaseConfig,
+      fixedThreadPool: ExecutionContext,
+      cachedThreadPool: ExecutionContext): Resource[F, HikariTransactor[F]] =
+    HikariTransactor.newHikariTransactor[F](config.driver,
+                                            config.url,
+                                            config.user,
+                                            config.password,
+                                            fixedThreadPool,
+                                            cachedThreadPool)
 
-  implicit val configReader: ConfigReader[DatabaseConfig] = deriveReader[DatabaseConfig]
+ def initializeDb[F[_]](config: DatabaseConfig)(implicit S: Sync[F]): F[Unit] =
+    S.delay {
+        val fw: Flyway = {
+          Flyway.configure().dataSource(config.url, config.user, config.password).load()
+        }
+        fw.migrate()
+      }
+      .as(())
 
 }
+

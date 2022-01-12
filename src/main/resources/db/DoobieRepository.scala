@@ -1,3 +1,5 @@
+package shopping_list.db
+
 
 import cats.effect.Sync
 import data.*
@@ -9,6 +11,17 @@ import eu.timepit.refined.auto._
 import fs2.Stream
 
 import scala.collection.immutable.Seq
+
+
+/**
+ * Singleton object defining the SQL queries used in the Shopping_list app
+ */
+private object ItemSQL {
+    implicit val itemTypeMeta : Meta
+}
+
+
+
 
 
 /**
@@ -49,8 +62,9 @@ final class DoobieRepository[F[_]: Sync](tx: Transactor[F]) extends Repository[F
     * @return The number of affected database rows
     */
   def saveItem(i: Item): F[Int] =
-      val namesSql = "INSERT INTO items (id,name,status) VALUES (?,?,?)"
-      val namesValues = i.map(i => (i.id, i.status,))
+      sql"INSERT INTO items (id,name,status) VALUES (${item.id}, ${item.name},${item.status})"
+
+
 
   /**
     * Update the given item in the database.
