@@ -1,23 +1,18 @@
-package shopping_list
-package data
+package shopping_list.data
+
+import enumeratum._
 
 /**
  * The Status sealed trait represents the different statuses that an Item can be in.
  *
  */
 
-sealed trait Status(val state:String)
-case object Ordered extends Status("ordered")
-case object Bought extends Status("bought")
-case object Unavailable extends Status("unavailable")
+sealed trait Status extends EnumEntry
 
-object Status{
-    private def states = Set(Ordered,Bought, NotAvailable)
-    
-    /**
-     * A method used to (WM to compelte the description)
-     */
-    def unsafeFromString(state: String) : Status = {
-        states.find(_.state == state).get
-    }
+case object Status extends Enum[Status] with CirceEnum[Status]{
+case object Ordered extends Status
+case object Bought extends Status
+case object Unavailable extends Status
+
+val values = findValues
 }

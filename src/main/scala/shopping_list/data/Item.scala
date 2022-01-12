@@ -17,9 +17,9 @@ import cats.implicits._
  */
 
  final case class Item(
-    id: Int,
+    id: Option[Int],
     name: Name,
-    status: Status
+    status: Status = Ordered
  )
 
  object Item {
