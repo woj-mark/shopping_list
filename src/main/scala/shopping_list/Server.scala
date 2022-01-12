@@ -20,6 +20,8 @@ object Server extends IOApp {
     fixedThreadPool  <- ExecutionContexts.fixedThreadPool[F](conf.database.connections.poolSize)
     cachedThreadPool <- ExecutionContexts.cachedThreadPool[F]
     _ <- DatabaseConfig.transactor(conf.database, fixedThreadPool, cachedThreadPool)
+    transactor <- DatabaseConfig.transactor(conf.database, fixedThreadPool, cachedThreadPool)
+_          = DoobieShoppingListInterpreter[F](transactor)
     server <- BlazeServerBuilder[F]
         .bindHttp(conf.server.port, conf.server.host)
         .resource
