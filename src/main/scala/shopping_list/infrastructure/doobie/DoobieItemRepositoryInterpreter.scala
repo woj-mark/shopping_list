@@ -71,8 +71,8 @@ def create(item: Item): F[Item] =
       .option
       .transact(transactor)
 
-  def delete(id: Long): F[Option[Pet]] =
-    OptionT(get(id)).semiflatMap(pet => PetSQL.delete(id).run.transact(transactor).as(pet)).value
+  def delete(id: Long): F[Option[Item]] =
+    OptionT(get(id)).semiflatMap(pet => ItemSQL.delete(id).run.transact(transactor).as(item)).value
 
 
 
