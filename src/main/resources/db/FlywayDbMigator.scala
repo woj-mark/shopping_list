@@ -11,7 +11,7 @@ import org.flywaydb.core.Flyway
   */
 
 
-class FlywayDbMigator extends DbMigrator {
+final class FlywayDbMigator extends DbMigrator {
       /**
     * Apply pending migrations to the database.
     *
