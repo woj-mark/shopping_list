@@ -23,8 +23,7 @@ import shopping_list.data.Item
 private object ItemSQL{
 
 //`StatusMeta` is requited to handle the ADT 'Item'
-  implicit val StatusMeta: Meta[PetStatus] =
-Meta[String].imap(PetStatus.withName)(_.entryName)
+  implicit val StatusMeta: Meta[Status] = Meta[String].imap(Status.withName)(_.entryName)
 
 
   def select(id: Int): Query0[Item] =
@@ -44,6 +43,39 @@ Meta[String].imap(PetStatus.withName)(_.entryName)
           SET id = ${item.id}}, name = ${item.name}, status = ${id.status}
           WHERE id = $id
       """.update
+
+  def delete(id: Int): Update0 =
+    sql"""DELETE FROM items WHERE id = $id""".update
+
+}
+
+
+class DoobieItemRepositoryInterpreter[F[_]: Monad](val transactor: Transactor[F]) extends RepositoryAlgebra[F] 
+{
+  import ItemSQL._
+
+def create(item: Item): F[Item] =
+    insert(item)
+      .withUniqueGeneratedKeys[Int]("id")
+      .map(id => item.copy(id = id.some))
+      .transact(transactor)
+
+  def update(item: Item): F[Option[Item]] =
+    OptionT.fromOption[ConnectionIO](item.id)
+      .semiflatMap(id => ItemSQL.update(pet, id).run.as(item))
+      .value
+      .transact(transactor)
+
+  def get(id: Int): F[Option[Item]] = 
+      select(id)
+      .option
+      .transact(transactor)
+
+  def delete(id: Long): F[Option[Pet]] =
+    OptionT(get(id)).semiflatMap(pet => PetSQL.delete(id).run.transact(transactor).as(pet)).value
+
+
+
 
 
 
