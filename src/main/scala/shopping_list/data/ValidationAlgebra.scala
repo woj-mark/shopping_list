@@ -15,5 +15,5 @@ trait ValidationAlgebra {
 
   def doesNotExist(item:Item):EitherT[F,ItemAlreadyExistsError, Unit]
   
-  def exists(item:Item): EitherT[F,ItemNotFoundError,Unit]
+  def exists(id:Int): EitherT[F,ItemNotFoundError.type,Unit]
 }

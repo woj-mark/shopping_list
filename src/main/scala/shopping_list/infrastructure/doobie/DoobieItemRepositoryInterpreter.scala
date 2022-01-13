@@ -47,6 +47,13 @@ private object ItemSQL{
   def delete(id: Int): Update0 =
     sql"""DELETE FROM items WHERE id = $id""".update
 
+
+def selectByName(name: String): Query0[Item] =
+    sql"""SELECT id,status,name
+          FROM items
+          WHERE name = $name 
+       """.query[Item]
+
 }
 
 
@@ -74,6 +81,8 @@ def create(item: Item): F[Item] =
   def delete(id: Long): F[Option[Item]] =
     OptionT(get(id)).semiflatMap(pet => ItemSQL.delete(id).run.transact(transactor).as(item)).value
 
+  def findByName(name: String) : F[Option[Item]] =
+      selectByName(name).option.transact(transactor)
 }
 //Companion object for the DoobieShoppingListInterpreter
 object DoobieShoppingListInterpreter {

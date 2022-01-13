@@ -14,4 +14,7 @@ trait RepositoryAlgebra[F[_]] {
   def update(item: Item): F[Option[Item]]
   def get(item: Int): F[Option[Item]]
   def delete(item: Int): F[Option[Item]]
+
+  def findByName(name: String): F[Item]
+
 }
