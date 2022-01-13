@@ -1,4 +1,4 @@
-package shopping_list
+package shopping_list.data
 
 import shopping_list.data.Item
 

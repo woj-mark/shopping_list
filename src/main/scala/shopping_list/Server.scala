@@ -8,7 +8,7 @@ import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.{Server => H4Server}
 
 import shopping_list.config.{DatabaseConfig,ShoppingListConfig}
-
+import shopping_list.data.ItemNotFoundError
 
 
 object Server extends IOApp {
