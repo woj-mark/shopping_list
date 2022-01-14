@@ -18,7 +18,7 @@ import cats.implicits._
 
  final case class Item(
     id: Option[Int],
-    name: Name,
+    name: String,
     status: Status = Ordered
  )
 
