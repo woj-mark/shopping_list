@@ -33,8 +33,17 @@ class Service[F[_]](repoAlgebra:RepositoryAlgebra,
   def delete(id:Int)(implicit M: Monad[F]):F[Umit] = 
       repoAlgebra.delete(id).as()
 
+  def findByName(name:String): F[Item] =
+      repoAlgebra.findByName(name)
 
-                    }
+}
 
+//A companion object with apply method for the Service
+object Service{
+    def apply[F[_]:Monad](repoAlgebra:RepositoryAlgebra,
+                    validationAlgebra:ValidationAlgebra)=
+    new Service[F](repoAlgebra,validationAlgebra)
+                    
+}
   
 
