@@ -15,10 +15,7 @@ import shopping_list.data.{ItemAlreadyExistsError, ItemNotFoundError}
 class Service[F[_]](repoAlgebra:RepositoryAlgebra,
                     validationAlgebra:ValidationAlgebra) {
   def create(item:Item)(implicit M : Monad[F]) : EitherT[F,ItemAlreadyExistsError, Item] = 
-      for{
-     _ <- validationAlgebra.liftF(repoAlgebra.doesNotExist(item))
-     created <-EitherT.liftF(repoAlgebra.create(item))
-      } created
+      repoAlgebra.create(item)
 
   def get(id:Int)(implicit M : Monad[F]) :EitherT[F,ItemNotFoundError.type, Item] = 
       EitherT.fromOptionF(repoAlgebra.get(id),ItemNotFoundError)
@@ -28,9 +25,9 @@ class Service[F[_]](repoAlgebra:RepositoryAlgebra,
       for{
           _ <- validationAlgebra.exists(item.id)
           updated <- EitherT.fromOptionF(repoAlgebra.update(item),ItemNotFoundError)
-      } updated
+      } yield updated
 
-  def delete(id:Int)(implicit M: Monad[F]):F[Umit] = 
+  def delete(id:Int)(implicit M: Monad[F]):F[Unit] = 
       repoAlgebra.delete(id).as()
 
   def findByName(name:String): F[Item] =

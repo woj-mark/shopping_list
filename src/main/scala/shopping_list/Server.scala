@@ -22,6 +22,9 @@ object Server extends IOApp {
     _ <- DatabaseConfig.transactor(conf.database, fixedThreadPool, cachedThreadPool)
     transactor <- DatabaseConfig.transactor(conf.database, fixedThreadPool, cachedThreadPool)
 _          = DoobieShoppingListInterpreter[F](transactor)
+    shoplistRepository = DoobieItemRepositoryInterpreter[[F](transactor)
+    shoplistValidation = ValidationInterpreter[F](petRepository)
+
     server <- BlazeServerBuilder[F]
         .bindHttp(conf.server.port, conf.server.host)
         .resource
